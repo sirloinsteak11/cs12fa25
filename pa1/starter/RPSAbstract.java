@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Random;
 
 public abstract class RPSAbstract implements RPSInterface {
@@ -58,7 +57,9 @@ public abstract class RPSAbstract implements RPSInterface {
 
     @Override
     public boolean isValidMove(String move) {
-        // TODO
+        if (move == null) {
+                return false;
+        }
         // Use a loop here
         for (int i = 0; i < possibleMoves.length; i++) {
                 if (move.equals(possibleMoves[i])) {
@@ -79,29 +80,28 @@ public abstract class RPSAbstract implements RPSInterface {
 
         if (winner == -1) {
                 System.out.println(INVALID_INPUT);
+                return;
         }
         if (winner == 0) {
-                System.out.println(TIE);
+                System.out.println(String.format(CPU_MOVE + "%s", cpuMove, TIE));
                 numTies++;
                 numGames++;
         }
         if (winner == 1) {
-                System.out.println(PLAYER_WIN);
+                System.out.println(String.format(CPU_MOVE + "%s", cpuMove, PLAYER_WIN));
                 numPlayerWins++;
                 numGames++;
         }
         if (winner == 2) {
-                System.out.println(CPU_WIN);
+                System.out.println(String.format(CPU_MOVE + "%s", cpuMove, CPU_WIN));
                 numCPUWins++;
                 numGames++;
         }
 
         // Record the moves made
-        playerMoves = Arrays.copyOf(playerMoves, playerMoves.length + 1);
-        playerMoves[playerMoves.length-1] = playerMove;
+        playerMoves[numGames-1] = playerMove;
 
-        cpuMoves = Arrays.copyOf(cpuMoves, cpuMoves.length + 1);
-        cpuMoves[cpuMoves.length-1] = cpuMove;
+        cpuMoves[numGames-1] = cpuMove;
 
 
         // Add one to the appropriate statistics
@@ -152,4 +152,6 @@ public abstract class RPSAbstract implements RPSInterface {
         System.out.printf(OVERALL_STATS, cpuWinPercent, playerWinPercent,
                 tiedPercent);
     }
+
+    
 }
